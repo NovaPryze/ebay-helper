@@ -1,38 +1,29 @@
 import streamlit as st 
 import pandas as pd 
 
-st.title("Test 1")
+st.title("Ebay Helper")
 
-df = pd.DataFrame({
-    'first column': [1, 2, 3, 4],
-    'second column': [10, 20, 30, 40]
-    })
+product_title = st.text_input("Titel eingeben", placeholder="z. B. Smartphone")
 
-option = st.selectbox(
-    'Which number do you like best?',
-     df['first column'])
+col1, col2 = st.columns([1, 3])
+with col1: 
+    show_feature = st.checkbox("Feature")
+feature_text = ""
+with col2:
+    if show_feature:
+        feature_text = st.text_input("Eingabe", placeholder="Feature hier...", label_visibility="collapsed")
 
-'You selected: ', option
 
-# Add a selectbox to the sidebar:
-add_selectbox = st.sidebar.selectbox(
-    'How would you like to be contacted?',
-    ('Email', 'Home phone', 'Mobile phone')
-)
+col3, col4 = st.columns([1, 3])
+with col3: 
+    show_feature2 = st.checkbox("Feature 2")
+feature_text2 = ""
+with col4:
+    if show_feature2:
+        feature_text2 = st.text_input("Eingabe2", placeholder="Feature hier...", label_visibility="collapsed")
 
-# Add a slider to the sidebar:
-add_slider = st.sidebar.slider(
-    'Select a range of values',
-    0.0, 100.0, (25.0, 75.0)
-)
+output = f"{product_title}\n\n{feature_text}\n{feature_text2}"
 
-left_column, right_column = st.columns(2)
-# You can use a column just like st.sidebar:
-left_column.button('Press me!')
+st.divider()
 
-# Or even better, call Streamlit functions inside a "with" block:
-with right_column:
-    chosen = st.radio(
-        'Sorting hat',
-        ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
-    st.write(f"You are in {chosen} house!")
+st.code(output, language=None)
