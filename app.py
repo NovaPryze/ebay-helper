@@ -33,7 +33,7 @@ with col1:
 marke_text = ""
 with col2:
     if show_marke:
-        marke_text = st.text_input("marke", placeholder="Marke und Modell hier...", label_visibility="collapsed")
+        marke_text = st.text_input("marke", placeholder="z. B. Samsung Galaxy S25 Ultra", label_visibility="collapsed")
 
 # Bundle
 bundle_output = ""
@@ -47,7 +47,7 @@ with st.expander("Bundle Items"):
 
     updated_fields = []
     for i, content in enumerate(st.session_state.bundle_fields):
-        col30, col40 = st.columns([6, 1])
+        col30, col40 = st.columns([6, 1], vertical_alignment="center")
         
         with col30:
             val = st.text_input(f"Item {i + 1}", value=content, key=f"field_{i}")
@@ -94,7 +94,7 @@ with st.expander("Lieferumfang"):
 
     updated_fields = []
     for i, content in enumerate(st.session_state.liefer_fields):
-        col10, col20 = st.columns([6, 1])
+        col10, col20 = st.columns([6, 1], vertical_alignment="center")
         
         with col10:
             val = st.text_input(f"Item {i + 1}", value=content, key=f"item_{i}")
@@ -131,7 +131,7 @@ with st.expander("Technischen Daten"):
 
     updated_fields = []
     for i, content in enumerate(st.session_state.daten_fields):
-        col50, col60 = st.columns([6, 1])
+        col50, col60 = st.columns([6, 1], vertical_alignment="center")
         
         with col50:
             val = st.text_input(f"Item {i + 1}", value=content, key=f"data_{i}")
@@ -160,7 +160,7 @@ with st.expander("Besonderheiten"):
 
     updated_fields = []
     for i, content in enumerate(st.session_state.special_output):
-        col70, col80 = st.columns([6, 1])
+        col70, col80 = st.columns([6, 1], vertical_alignment="center")
         
         with col70:
             val = st.text_input(f"Item {i + 1}", value=content, key=f"lol_{i}")
