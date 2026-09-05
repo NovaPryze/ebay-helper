@@ -1,9 +1,21 @@
+from ast import With
 from altair import VEGAEMBED_VERSION
 import streamlit as st 
 
 st.title("Verkaufshelfer")
 
 st.divider()
+
+# CSV Upload
+col14, col15, col16 = st.columns([1,2,1], vertical_alignment="center")
+with col14:
+    st.text("Database vorhanden")
+
+with col16:
+    st.button("Upload Database")
+
+with col15: 
+    st.text("Placeholder: Status 0%")
 
 # Plattform
 col12, col13 = st.columns([1,3])
@@ -73,13 +85,17 @@ with col4:
         reason_text = st.text_input("reason", placeholder="Grund hier...", label_visibility="collapsed")
 
 # Zustand
-col5, col6 = st.columns([1, 3])
+col5, col6, col161 = st.columns([1, 1.1, 1.9])
 with col5:
     show_zustand = st.checkbox("Zustand", value=True)
 zustand_text = ""
 with col6:
     if show_zustand:
         zustand_text = st.selectbox("Zustand", ["Sehr gut", "gut", "Defekt"], label_visibility="collapsed")
+
+zustand_zusatz = ""
+with col161:
+    zustand_zusatz = st.text_input("zusatz", placeholder="Weiteres....", label_visibility="collapsed")
 
 # Lieferumfang
 liefer_output = ""
@@ -116,7 +132,7 @@ with col7:
     preis_text = st.number_input("preis", placeholder="Preis", label_visibility="collapsed", min_value=0.00, max_value=2000.00, step=0.01, format="%.2f")
 
 with col8:
-    preis_art = st.selectbox("preis_art", ["Festpreis","VB","Festpreis + Versand"], label_visibility="collapsed")
+    preis_art = st.selectbox("preis_art", ["Festpreis","VB","Festpreis zzgl. Versand"], label_visibility="collapsed")
 
 # Technische Daten
 daten_output = ""
@@ -185,6 +201,8 @@ hinweis = "Wichtiger Hinweis (Privatverkauf):\nDies ist ein Privatverkauf, daher
 # Output 
 
 # Basic
+if not product_title:
+    product_title = "Crazy Product"
 preis = f"{preis_text:.2f}{"€"}".replace(".", ",")
 basic_output = f"{product_title}{" - "}{zustand_text}{" - "}{preis}\n\n"
 
@@ -198,6 +216,8 @@ if bundle_output:
     complex_output += f"{"Im Bundle enthalten: "}\n{bundle_output}\n\n"
 
 # Zustand
+if zustand_zusatz:
+    zustand_text += f"{", "}{zustand_zusatz}"
 complex_output += f"{"Zustand: "}\n{zustand_text}\n\n"
 
 if liefer_output:
@@ -213,7 +233,8 @@ if reason_text:
     complex_output += f"{"Grund für Verkauf: "}\n{reason_text}\n\n"
 
 # Preis
-complex_output += f"{"Preis: "}\n{preis_text:.2f}{"€ "}{preis_art}\n\n".replace(".", ",")
+complex_output += f"{"Preis: "}\n".replace(".", ",")
+complex_output += f"{preis_text:.2f}{"€ "}{preis_art}\n\n"
 
 # Versand
 complex_output += f"{"Versand/Abholung: "}\n"
@@ -227,6 +248,14 @@ output = f"{basic_output}{complex_output}{hinweis}"
 st.divider()
 
 st.code(output, language=None)
+
+if st.button("🔄 Reset", type="secondary"):
+    # Hier kann noch mehr passieren
+    # print("erledigt")    
+    st.iframe(
+            "<script>window.parent.location.reload();</script>", 
+            height=1
+        )
 
 st.divider()
 
