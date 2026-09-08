@@ -1,21 +1,24 @@
-from ast import With
-from altair import VEGAEMBED_VERSION
 import streamlit as st 
+from csvpro import render_database_search
 
 st.title("Verkaufshelfer")
 
 st.divider()
 
 # CSV Upload
-col14, col15, col16 = st.columns([1,2,1], vertical_alignment="center")
+col14, col15 = st.columns([1,2], vertical_alignment="center")
 with col14:
     st.text("Database vorhanden")
 
-with col16:
-    st.button("Upload Database")
+with col15:
+    uploaded_file = st.file_uploader(
+        "Wähle eine Excel- oder CSV-Datei aus:", 
+        type=["csv", "xlsx", "xls"],
+        key="user_file_uploader"
+        )
 
-with col15: 
-    st.text("Placeholder: Status 0%")
+# CSV Renderer
+render_database_search(uploaded_file)
 
 # Plattform
 col12, col13 = st.columns([1,3])
