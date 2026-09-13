@@ -6,11 +6,26 @@ def render_database_search(uploaded_file):
     if uploaded_file is None:
         return
 
-    df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file)
+    # Datei einlesen & Tabellenblatt-Unterstützung für Excel
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+    else:
+        # Excel-Datei laden, um verfügbare Tabellenblätter abzufragen
+        excel_file = pd.ExcelFile(uploaded_file)
+        sheet_names = excel_file.sheet_names
 
+        # Tabellenblatt auswählen (falls mehr als eines vorhanden ist)
+        if len(sheet_names) > 1:
+            selected_sheet = st.selectbox("Tabellenblatt wählen:", sheet_names)
+        else:
+            selected_sheet = sheet_names[0]
+
+        df = pd.read_excel(excel_file, sheet_name=selected_sheet)
+
+    # 1. Suchspalte wählen
     selected_col = st.selectbox("Suchspalte wählen:", df.columns)
 
-    # Funktion zur Live-Filterung der Optionen beim Tippen
+    # 2. Live-Filterung der Optionen beim Tippen
     def search_function(search_term: str):
         if not search_term:
             return []
@@ -19,10 +34,11 @@ def render_database_search(uploaded_file):
 
     selected_value = st_searchbox(
         search_function,
-        key="live_searchbox",
+        key=f"live_searchbox_{selected_col}",  # Key dynamisch halten für Spaltenwechsel
         placeholder="Tippe zum Suchen..."
     )
 
+    # 3. Ergebnis anzeigen
     if selected_value:
         matches = df[df[selected_col].astype(str) == selected_value]
 
