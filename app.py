@@ -17,6 +17,12 @@ with st.sidebar:
         key="show_db_search"
     )
 
+    show_useless = st.toggle(
+        "⚙️ Hier passiert noch gar nix", 
+        value=st.session_state.get("show_useless_key", False),
+        key="show_useless_key"
+    )
+
     if show_db:
         st.subheader("📁 Datei Auswählen")
         
@@ -29,6 +35,9 @@ with st.sidebar:
         
         # Aufruf der minimalistischen Suche
         render_database_search(uploaded_file)
+
+    if show_useless:
+        st.error("Ur stupid")
 
 
 # ---Mainpage---
