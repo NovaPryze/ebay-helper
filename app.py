@@ -293,4 +293,4 @@ if st.button("🔄 Reset", type="secondary", key=f"reset_btn_{st.session_state.r
 
 st.divider()
 
-st.text("Version: 2.1")
+st.text("Version: 2.2")
